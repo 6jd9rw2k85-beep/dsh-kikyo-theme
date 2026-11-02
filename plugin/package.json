@@ -15,7 +15,7 @@
     "assets/*.svg",
     "cordis.patch.yml"
   ],
-  "license": "UNLICENSED",
+  "license": "MIT",
   "dsh": {
     "bundle": {
       "patch": "./cordis.patch.yml"
