@@ -1,0 +1,882 @@
+/* ==========================================================================
+   dsh-kikyo-theme — boot cover, wallpaper, ink-warm UI tokens
+   ========================================================================== */
+
+html.kk-booting,
+html.kk-booting body {
+  overflow: hidden !important;
+}
+
+/* ---------------------------------------------------------------- boot --- */
+#kk-boot {
+  position: fixed;
+  inset: 0;
+  z-index: 2147483000;
+  background: #05030a;
+  opacity: 1;
+  transition: opacity 1.35s ease;
+  overflow: hidden;
+  font-family: "Hiragino Mincho ProN", "Yu Mincho", "Songti SC", "Noto Serif CJK SC", serif;
+}
+#kk-boot.kk-gone {
+  opacity: 0;
+  pointer-events: none;
+}
+/* 最后一道纯 CSS 保险：万一脚本死在半路，这层开机幕布也会在 14s 自己让开。
+   它只会让画面变透明，不做任何别的动作，所以不可能反过来卡住界面。 */
+#kk-boot {
+  animation: kkBootLift 1.2s ease 14s forwards;
+}
+@keyframes kkBootLift {
+  to { opacity: 0; visibility: hidden; pointer-events: none; }
+}
+#kk-boot .kk-boot-fallback {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  color: #f3ddc6;
+  background:
+    radial-gradient(120% 90% at 72% 24%, rgba(146, 62, 40, 0.35), transparent 60%),
+    radial-gradient(90% 70% at 20% 80%, rgba(40, 24, 60, 0.5), transparent 65%),
+    #05030a;
+}
+.kk-fb-mark {
+  font-size: 42px;
+  letter-spacing: 0.55em;
+  text-indent: 0.55em;
+  color: #f6e3cd;
+  text-shadow: 0 0 28px rgba(232, 150, 92, 0.45);
+}
+.kk-fb-sub {
+  font-size: 10px;
+  letter-spacing: 0.42em;
+  color: rgba(240, 205, 168, 0.55);
+  font-family: ui-sans-serif, -apple-system, "Helvetica Neue", sans-serif;
+}
+.kk-fb-ring {
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  border: 1px solid rgba(240, 205, 168, 0.18);
+  border-top-color: rgba(232, 150, 92, 0.8);
+  animation: kk-spin 1.6s linear infinite;
+}
+@keyframes kk-spin { to { transform: rotate(360deg); } }
+
+.kk-boot-stage {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transform: scale(1.015);
+  transition: opacity 1.25s ease, transform 9s cubic-bezier(0.22, 0.6, 0.2, 1);
+}
+.kk-boot-stage.kk-in {
+  opacity: 1;
+  transform: scale(1);
+}
+.kk-boot-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.kk-boot-shade {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, rgba(5, 3, 10, 0.34) 0%, rgba(5, 3, 10, 0.12) 28%, rgba(5, 3, 10, 0) 50%),
+    linear-gradient(180deg, rgba(5, 3, 10, 0.26) 0%, rgba(5, 3, 10, 0) 20%, rgba(5, 3, 10, 0) 78%, rgba(5, 3, 10, 0.30) 100%);
+}
+.kk-boot-copy {
+  position: absolute;
+  left: 7.4vw;
+  top: 13vh;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  pointer-events: none;
+}
+.kk-vert {
+  writing-mode: vertical-rl;
+  text-orientation: upright;
+  font-size: clamp(24px, 2.95vw, 38px);
+  line-height: 1.4;
+  letter-spacing: 0.1em;
+  color: #f7e5d0;
+  text-shadow: 0 2px 22px rgba(0, 0, 0, 0.6), 0 0 46px rgba(236, 160, 100, 0.22);
+}
+.kk-vert span {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(-10px);
+  filter: blur(2px);
+  transition: opacity 0.85s ease, transform 0.85s ease, filter 0.85s ease;
+}
+.kk-vert span.kk-on {
+  opacity: 1;
+  transform: none;
+  filter: none;
+}
+.kk-sub {
+  margin-top: 30px;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-size: clamp(12px, 1.05vw, 15px);
+  letter-spacing: 0.42em;
+  color: #ecc9a4;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 1.1s ease, transform 1.1s ease;
+  white-space: nowrap;
+}
+.kk-sub.kk-on { opacity: 1; transform: none; }
+.kk-sub::before,
+.kk-sub::after {
+  content: "";
+  width: 26px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(236, 201, 164, 0.55), transparent);
+}
+.kk-sub i {
+  font-style: normal;
+  color: rgba(236, 201, 164, 0.55);
+  font-size: 0.72em;
+  letter-spacing: 0.3em;
+}
+.kk-brand {
+  position: absolute;
+  left: 7.4vw;
+  bottom: 7.2vh;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: ui-sans-serif, -apple-system, "Helvetica Neue", sans-serif;
+  font-size: 9.5px;
+  letter-spacing: 0.44em;
+  color: rgba(238, 208, 176, 0.5);
+  opacity: 0;
+  transition: opacity 1.4s ease;
+}
+.kk-brand.kk-on { opacity: 1; }
+.kk-brand b {
+  font-weight: 500;
+  color: rgba(246, 227, 205, 0.82);
+}
+.kk-brand em { font-style: normal; color: rgba(213, 86, 63, 0.9); }
+.kk-brand s { text-decoration: none; width: 22px; height: 1px; background: rgba(238, 208, 176, 0.25); }
+
+.kk-welcome {
+  position: absolute;
+  left: 50%;
+  top: 13.5vh;
+  transform: translate(-50%, 10px);
+  text-align: center;
+  opacity: 0;
+  transition: opacity 1.5s ease, transform 1.5s ease;
+  pointer-events: none;
+  white-space: nowrap;
+}
+.kk-welcome.kk-on { opacity: 1; transform: translate(-50%, 0); }
+.kk-welcome::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: min(600px, 74vw);
+  height: 210px;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(50% 50% at 50% 50%,
+    rgba(16, 7, 5, 0.66) 0%,
+    rgba(16, 7, 5, 0.42) 44%,
+    rgba(16, 7, 5, 0) 74%);
+  z-index: -1;
+  pointer-events: none;
+}
+.kk-welcome .kk-w-main {
+  font-size: clamp(20px, 2.35vw, 34px);
+  letter-spacing: 0.34em;
+  text-indent: 0.34em;
+  color: #f6d7ab;
+  text-shadow: 0 2px 10px rgba(20, 6, 4, 0.85), 0 6px 34px rgba(20, 6, 4, 0.7), 0 0 44px rgba(240, 170, 100, 0.22);
+}
+.kk-welcome .kk-w-line {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 14px;
+  color: rgba(246, 215, 171, 0.5);
+}
+.kk-welcome .kk-w-line::before,
+.kk-welcome .kk-w-line::after {
+  content: "";
+  width: 54px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(246, 215, 171, 0.45), transparent);
+}
+.kk-welcome .kk-w-dot {
+  width: 4px;
+  height: 4px;
+  transform: rotate(45deg);
+  background: rgba(246, 215, 171, 0.75);
+}
+.kk-welcome .kk-w-sub {
+  margin-top: 9px;
+  font-family: ui-sans-serif, -apple-system, "Helvetica Neue", sans-serif;
+  font-size: 9px;
+  letter-spacing: 0.62em;
+  text-indent: 0.62em;
+  color: rgba(246, 215, 171, 0.55);
+}
+
+.kk-skip,
+.kk-sound {
+  position: absolute;
+  bottom: 22px;
+  border: 1px solid rgba(238, 208, 176, 0.18);
+  background: rgba(10, 6, 12, 0.35);
+  color: rgba(240, 218, 194, 0.72);
+  font: 500 10.5px/1 ui-sans-serif, -apple-system, "Helvetica Neue", sans-serif;
+  letter-spacing: 0.16em;
+  padding: 8px 13px;
+  border-radius: 999px;
+  cursor: pointer;
+  backdrop-filter: blur(9px);
+  transition: opacity 0.4s ease, border-color 0.2s ease, color 0.2s ease;
+}
+.kk-skip { right: 24px; opacity: 0; }
+.kk-skip.kk-on { opacity: 0.85; }
+.kk-skip:hover { color: #ffe9cf; border-color: rgba(238, 208, 176, 0.4); }
+.kk-skip span {
+  margin-left: 6px;
+  color: rgba(238, 208, 176, 0.4);
+  letter-spacing: 0.1em;
+}
+.kk-sound {
+  left: 24px;
+  display: none;
+  color: #f2d6b2;
+  border-color: rgba(232, 150, 92, 0.45);
+}
+.kk-sound.kk-on { display: inline-flex; align-items: center; gap: 8px; }
+.kk-sound::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #e89a5c;
+  box-shadow: 0 0 10px rgba(232, 154, 92, 0.9);
+  animation: kk-pulse 1.6s ease-in-out infinite;
+}
+@keyframes kk-pulse { 50% { opacity: 0.35; } }
+
+/* ----------------------------------------------------------- wallpaper --- */
+#kk-wall {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  background: #05030a;
+  opacity: 0;
+  transition: opacity 2.2s ease;
+  pointer-events: none;
+}
+#kk-wall.kk-on { opacity: 1; }
+
+/* the wallpaper is a real <video> now: colour grading is one GPU filter
+   instead of a per-frame canvas pass */
+/* still wallpaper: one image, one infinite transform — no decoder, no loop
+   point, nothing that can flash */
+#kk-wall.kk-wallstill {
+  background: url("/dsh-kikyo/wall-still.jpg") center / cover no-repeat #05030a;
+  transform: scale(1.02);
+  transform-origin: 50% 52%;
+  will-change: transform;
+  animation: kkWallDrift 90s ease-in-out infinite alternate;
+}
+#kk-wall.kk-wallstill.kk-on { animation-play-state: running; }
+@keyframes kkWallDrift {
+  from { transform: scale(1.02) translate3d(0, 0, 0); }
+  to   { transform: scale(1.055) translate3d(-0.5%, -0.35%, 0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  #kk-wall.kk-wallstill { animation: none; }
+}
+
+#kk-wall.kk-wallvid {
+  filter: brightness(1.32) saturate(1.07);
+  pointer-events: none;
+  object-fit: cover;
+}
+#kk-wall-shade {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg, rgba(5, 3, 10, 0.03) 0%, rgba(5, 3, 10, 0.00) 26%, rgba(5, 3, 10, 0.00) 72%, rgba(5, 3, 10, 0.06) 100%),
+    radial-gradient(120% 90% at 78% 18%, rgba(186, 112, 66, 0.14), transparent 64%);
+}
+#kk-wall-veil {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: #05030a;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ------------------------------------------------------------- tokens --- */
+body,
+body[data-ds-dark-theme] {
+  --dsw-alias-bg-base: rgba(34, 20, 10, 0.50) !important;
+  --dsw-alias-bg-layer-1: rgba(48, 29, 14, 0.62) !important;
+  --dsw-alias-bg-layer-2: rgba(60, 36, 17, 0.70) !important;
+  --dsw-alias-bg-layer-3: rgba(70, 42, 20, 0.78) !important;
+  --dsw-alias-bg-layer-4: rgba(80, 48, 23, 0.86) !important;
+  --dsw-alias-bg-mask-1: rgba(20, 10, 6, 0.56) !important;
+
+  --dsw-alias-border-l1: rgba(255, 200, 130, 0.12) !important;
+  --dsw-alias-border-l2: rgba(255, 200, 130, 0.19) !important;
+  --dsw-alias-border-l3: rgba(255, 200, 130, 0.26) !important;
+  --dsw-alias-border-l4: rgba(255, 200, 130, 0.21) !important;
+
+  --dsw-alias-label-primary: #f9eeda !important;
+  --dsw-alias-label-primary-foreground: #241408 !important;
+  --dsw-alias-label-secondary: #e6cfb2 !important;
+  --dsw-alias-label-tertiary: #bfa184 !important;
+  --dsw-alias-label-caption: #a98b6e !important;
+  --dsw-alias-label-dimmed: #8d7258 !important;
+  --dsw-alias-label-shimmer: rgba(249, 238, 218, 0.5) !important;
+
+  --dsw-alias-brand-primary: #e6a34a !important;
+  --dsw-alias-link: #f2bd72 !important;
+  --dsw-alias-interactive-bg-hover: rgba(230, 163, 74, 0.12) !important;
+  --dsw-alias-interactive-bg-active: rgba(230, 163, 74, 0.20) !important;
+  --dsw-alias-button-primary-fill: #d98a3e !important;
+  --dsw-alias-button-primary-hover: #e8a04c !important;
+
+  --dsw-alias-markdown-code-block: rgba(28, 17, 9, 0.62) !important;
+  --dsw-alias-markdown-code-block-banner: rgba(48, 30, 16, 0.82) !important;
+  --dsw-alias-markdown-inline-code: rgba(230, 163, 74, 0.14) !important;
+  --dsw-alias-markdown-tag: rgba(230, 163, 74, 0.18) !important;
+
+  --dsw-alias-menu-surface-fill: rgba(32, 20, 12, 0.95) !important;
+  --dsw-alias-toast-bg: rgba(32, 20, 12, 0.96) !important;
+  --dsw-alias-tooltip-bg: rgba(38, 23, 13, 0.97) !important;
+  --dsw-alias-tooltip-key-bg: rgba(255, 200, 130, 0.12) !important;
+  --dsw-specific-sidebar-fill: rgba(26, 15, 8, 0.52) !important;
+  --dsw-specific-input-major: rgba(46, 28, 14, 0.82) !important;
+  --dsw-specific-menu: rgba(32, 20, 12, 0.95) !important;
+
+  --dsw-alias-scrollbar-bg-l2: rgba(255, 190, 120, 0.12) !important;
+  --dsw-alias-scrollbar-hover-l2: rgba(255, 190, 120, 0.24) !important;
+  --dsw-alias-state-business-primary: #e0a05a !important;
+  --dsw-alias-state-success-primary: #8fae7a !important;
+  --dsw-alias-state-error-primary: #d86a52 !important;
+}
+
+html.kk-ui body {
+  background-color: transparent !important;
+}
+
+/* paper grain + warm vignette above the app, below the boot cover.
+   NOTE: this must stay on ::before — the boot cover owns ::after and a
+   second, more specific ::after rule would outrank it and cancel the cover. */
+html.kk-ui body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 2147482000;
+  pointer-events: none;
+  opacity: 0.05;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)' opacity='0.6'/%3E%3C/svg%3E");
+}
+
+/* ------------------------------------------------------------ sidebar --- */
+[data-dsh-sidebar-root].kk-side {
+  position: relative;
+  border-right: 1px solid rgba(255, 180, 120, 0.08);
+  background-image:
+    radial-gradient(120% 60% at 50% 100%, rgba(120, 40, 30, 0.18), transparent 70%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cg fill='%23b7472f' opacity='0.16'%3E%3Cpath d='M34 24l3 7 7-2-3 7 7 3-7 3 3 7-7-2-3 7-3-7-7 2 3-7-7-3 7-3-3-7 7 2z'/%3E%3Cpath d='M118 96l2 5 5-1-2 5 5 2-5 2 2 5-5-1-2 5-2-5-5 1 2-5-5-2 5-2-2-5 5 1z'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: auto, 150px 150px;
+  background-repeat: no-repeat, repeat;
+}
+[data-dsh-sidebar-root] button {
+  position: relative;
+}
+[data-dsh-sidebar-root] [aria-current="page"],
+[data-dsh-sidebar-root] [aria-selected="true"],
+[data-dsh-sidebar-root] [data-active="true"] { position: relative; }
+[data-dsh-sidebar-root] [aria-current="page"]::after,
+[data-dsh-sidebar-root] [aria-selected="true"]::after,
+[data-dsh-sidebar-root] [data-active="true"]::after {
+  content: "";
+  position: absolute;
+  right: 7px;
+  top: 50%;
+  width: 9px;
+  height: 9px;
+  margin-top: -4.5px;
+  pointer-events: none;
+  opacity: 0.6;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M16 2l3 8 7-3-3 8 7 3-8 3 2 8-8-5-8 5 2-8-8-3 7-3-3-8 7 3z' fill='%23e0704a'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+:root {
+  /* width of the app's left rail; kikyo.js keeps this in sync so the Q-figure
+     can sit just inside the conversation column */
+  --kk-side-w: 268px;
+}
+
+#kk-chibi {
+  position: fixed;
+  left: calc(var(--kk-side-w) + 8px);
+  bottom: 16px;
+  width: 92px;
+  height: 104px;
+  z-index: 60;
+  pointer-events: none;
+  opacity: 0.97;
+  will-change: transform;
+  animation: kk-chibi-bob 5.6s ease-in-out infinite;
+}
+
+/* the artwork lives on an inner layer: it sways on its own slow loop while
+   #kk-chibi above it does the quicker breathing rise */
+#kk-chibi .kk-body {
+  position: absolute;
+  inset: 0;
+  /* Three layers: the painted Q-figure, an inline 224px copy of it (so the
+     mascot shows up even before the /chibi.png route exists), then the old
+     vector chibi as the last resort. Missing layers just drop out. */
+  background: url("/dsh-kikyo/chibi.png") center bottom / contain no-repeat,
+              url("data:image/webp;base64,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") center bottom / contain no-repeat,
+              url("/dsh-kikyo/chibi.svg") center bottom / contain no-repeat;
+  filter: drop-shadow(0 6px 16px rgba(10, 4, 6, 0.6)) drop-shadow(0 0 18px rgba(230, 163, 74, 0.18));
+  transform-origin: 50% 92%;
+  will-change: transform;
+  animation: kk-chibi-sway 10.5s ease-in-out infinite;
+}
+@keyframes kk-chibi-sway {
+  0%, 100% { transform: rotate(0deg) translateX(0); }
+  28%      { transform: rotate(-1.1deg) translateX(-0.8px); }
+  64%      { transform: rotate(0.9deg) translateX(0.9px); }
+}
+/* breathing loop: a slow rise with a barely-there sway, so the corner figure
+   looks like she is standing there rather than pasted on */
+@keyframes kk-chibi-bob {
+  0%, 100% { transform: translateY(0) scale(1) rotate(0deg); }
+  38%      { transform: translateY(-2.5px) scale(1.018) rotate(-0.7deg); }
+  72%      { transform: translateY(-1px) scale(1.006) rotate(0.6deg); }
+}
+
+/* warm bloom that swells with the breath (screen blend = adds light only) */
+#kk-chibi::after {
+  content: "";
+  position: absolute;
+  left: -18%; top: -14%;
+  width: 136%; height: 134%;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  background: radial-gradient(50% 50% at 50% 64%,
+              rgba(255, 178, 96, 0.22), rgba(255, 138, 66, 0) 70%);
+  animation: kk-chibi-glow 5.6s ease-in-out infinite;
+}
+@keyframes kk-chibi-glow {
+  0%, 100% { opacity: 0.42; }
+  38%      { opacity: 0.92; }
+}
+
+/* maple leaves drifting up around her */
+.kk-ml {
+  position: absolute;
+  left: 44%;
+  bottom: 16%;
+  width: 11px;
+  height: 11px;
+  opacity: 0;
+  will-change: transform, opacity;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23d74a2e' d='M12 1.6l1.7 4.5 3.7-2.3-1.2 4.3 4.8-.6-3.3 3.4 4.3 1.6-4.4 1.7 2.7 3.8-4.6-1.1.6 4.6-3.2-3.2-3.2 3.2.6-4.6-4.6 1.1 2.7-3.8L4 13.9l4.3-1.6L5 8.9l4.8.6-1.2-4.3 3.7 2.3z'/%3E%3C/svg%3E") center / contain no-repeat;
+  animation: kk-ml-rise var(--dur, 7s) linear infinite;
+  animation-delay: var(--delay, 0s);
+}
+.kk-ml-1 { --dx: -16px; --dy: -54px; --rot: -140deg; --dur: 7.2s; --delay: 0.2s;
+           left: 40%; bottom: 14%; width: 10px; height: 10px; }
+.kk-ml-2 { --dx: 14px;  --dy: -64px; --rot: 130deg;  --dur: 8.4s; --delay: 1.8s;
+           left: 56%; bottom: 10%; }
+.kk-ml-3 { --dx: -26px; --dy: -42px; --rot: -210deg; --dur: 6.4s; --delay: 3.1s;
+           left: 33%; bottom: 22%; width: 8px; height: 8px; }
+.kk-ml-4 { --dx: 22px;  --dy: -72px; --rot: 220deg;  --dur: 9.2s; --delay: 4.6s;
+           left: 62%; bottom: 18%; }
+.kk-ml-5 { --dx: -6px;  --dy: -76px; --rot: 95deg;   --dur: 7.8s; --delay: 6.1s;
+           left: 48%; bottom: 8%; width: 13px; height: 13px; }
+@keyframes kk-ml-rise {
+  0%   { opacity: 0; transform: translate(0, 8px) rotate(0deg) scale(0.6); }
+  12%  { opacity: 0.95; }
+  62%  { opacity: 0.78; }
+  100% { opacity: 0; transform: translate(var(--dx), var(--dy)) rotate(var(--rot)) scale(1); }
+}
+
+/* small leaf at the top of the sidebar, behind the logo */
+[data-dsh-sidebar-root].kk-side::before {
+  content: "";
+  position: absolute;
+  left: -26px;
+  top: 46px;
+  width: 118px;
+  height: 118px;
+  pointer-events: none;
+  opacity: 0.5;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'%3E%3Cg fill='none' stroke='%23c05a3c' stroke-width='1.3' opacity='0.55'%3E%3Cpath d='M-10 104C28 96 52 74 66 40'/%3E%3Cpath d='M22 92c-2-14 4-24 16-30'/%3E%3Cpath d='M40 76c10 0 18 4 24 12'/%3E%3C/g%3E%3Cg fill='%23c05a3c' opacity='0.5'%3E%3Cpath d='M56 38l3 6 6-2-2 6 6 3-6 3 2 6-6-2-3 6-3-6-6 2 2-6-6-3 6-3-2-6 6 2z'/%3E%3Cpath d='M30 84l2 4 4-1-1 4 4 2-4 2 1 4-4-1-2 4-2-4-4 1 1-4-4-2 4-2-1-4 4 1z'/%3E%3C/g%3E%3C/svg%3E") center / contain no-repeat;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #kk-chibi, #kk-chibi::after, .kk-ml { animation: none; }
+  #kk-chibi::after { opacity: 0.5; }
+  .kk-ml { opacity: 0.7; }
+  .kk-boot-stage { transition: opacity 0.4s ease; }
+}
+
+
+/* --------------------------------------------------- sidebar vine --- */
+.kk-vine {
+  position: absolute;
+  right: 2px;
+  top: 96px;
+  width: 34px;
+  height: 300px;
+  z-index: 2;
+  pointer-events: none;
+}
+.kk-vine::before {
+  content: "";
+  position: absolute;
+  left: 17px;
+  top: -14px;
+  width: 1px;
+  height: 310px;
+  background: linear-gradient(180deg, rgba(214, 148, 92, 0), rgba(214, 148, 92, 0.45) 12%, rgba(214, 148, 92, 0.18) 78%, rgba(214, 148, 92, 0));
+}
+.kk-vine span {
+  position: absolute;
+  left: 1px;
+  width: 32px;
+  text-align: center;
+  font-size: 21px;
+  line-height: 1;
+  opacity: 0.9;
+  filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.55)) saturate(0.95);
+  animation: kk-sway 6.5s ease-in-out infinite;
+}
+.kk-vine span:nth-child(2n) { animation-delay: -2.1s; font-size: 18px; opacity: 0.78; }
+.kk-vine span:nth-child(3n) { animation-delay: -4.2s; font-size: 24px; }
+@keyframes kk-sway {
+  0%, 100% { transform: rotate(-9deg) translateX(0); }
+  50% { transform: rotate(7deg) translateX(-2px); }
+}
+
+/* ----------------------------------------------------- motto label --- */
+.kk-motto {
+  position: fixed;
+  top: 196px;
+  /* centred over the conversation column, not the whole window */
+  left: calc((100% + var(--kk-side-w, 268px)) / 2);
+  transform: translateX(-50%);
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: 26px;
+  pointer-events: none;
+  user-select: none;
+  font-family: "Hiragino Mincho ProN", "Yu Mincho", "Songti SC", serif;
+  font-size: 39px;
+  letter-spacing: 0.34em;
+  /* watermark, not a label: screen blending only adds light, so chat text
+     underneath stays readable instead of being covered by a solid glyph */
+  color: rgba(250, 224, 180, 0.30);
+  text-shadow: 0 2px 14px rgba(10, 4, 4, 0.28);
+  mix-blend-mode: screen;
+  opacity: 0;
+  transition: opacity 1.2s ease 0.35s;
+}
+html:not(.kk-booting) .kk-motto { opacity: 1; }
+.kk-motto::before {
+  content: "";
+  position: absolute;
+  inset: -26px -90px;
+  background: radial-gradient(55% 100% at 50% 50%, rgba(240, 190, 120, 0.07), rgba(240, 190, 120, 0) 74%);
+  z-index: -1;
+  pointer-events: none;
+}
+.kk-motto i {
+  width: 78px;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(230, 163, 74, 0), rgba(230, 163, 74, 0.30));
+}
+.kk-motto i:last-child { transform: rotate(180deg); }
+.kk-motto span { padding-left: 0.2em; }
+
+/* ------------------------------------------------ left-to-right wipe --- */
+#kk-wall.kk-reveal {
+  animation: kk-wipe 1.7s cubic-bezier(0.22, 0.62, 0.2, 1) both;
+}
+@keyframes kk-wipe {
+  0% { clip-path: inset(0 100% 0 0); opacity: 0.35; }
+  100% { clip-path: inset(0 0 0 0); opacity: 0.96; }
+}
+
+/* ------------------------------------------------ ui particle layer --- */
+#kk-motes {
+  position: fixed;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+  opacity: 0.7;
+  mix-blend-mode: screen;
+}
+
+
+/* ------------------------------------------------------ ambient music --- */
+#kk-music {
+  position: fixed;
+  right: 16px;
+  bottom: 58px;
+  width: 30px;
+  height: 30px;
+  z-index: 61;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-size: 15px;
+  line-height: 1;
+  color: rgba(255, 226, 186, 0.5);
+  background: rgba(28, 14, 8, 0.42);
+  border: 1px solid rgba(255, 200, 140, 0.16);
+  cursor: pointer;
+  user-select: none;
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  transition: color .3s ease, border-color .3s ease, box-shadow .3s ease, transform .3s ease;
+}
+#kk-music:hover { transform: scale(1.08); color: #ffd9a3; }
+#kk-music.kk-on {
+  color: #ffd9a3;
+  border-color: rgba(255, 200, 140, 0.5);
+  box-shadow: 0 0 14px rgba(232, 160, 84, 0.32);
+  animation: kk-music-pulse 3.4s ease-in-out infinite;
+}
+@keyframes kk-music-pulse { 0%, 100% { opacity: .82; } 50% { opacity: 1; } }
+
+/* ------------------------------------------------- pre-JS cover --- */
+/* Before kikyo.js has painted its first frame (and before the app shell has
+   hydrated), a warm veil hides the host's own loading screen so nobody sees
+   "加载 DeepSeek" flash through the boot animation. .kk-ready is flipped by
+   kikyo.js the moment the first frame lands. */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  /* one above the shell's boot cover (2147483646): if the desktop shell manages
+     to paint its dark "正在启动 DSH Desktop" frame, the artwork still covers it */
+  z-index: 2147483647;
+  pointer-events: none;
+  /* the curtain is the artwork itself, matching the copy index.js taps into
+     the document head — whichever stylesheet lands first shows the same frame */
+  background:
+    radial-gradient(120% 90% at 50% 46%, rgba(30, 12, 9, 0.10), rgba(9, 4, 5, 0.55) 78%),
+    url("/dsh-kikyo/hero-boot.jpg") center / cover no-repeat,
+    #0a0507;
+  opacity: 1;
+  /* the shell hides body and everything inside it while it boots; visibility
+     is inherited, pseudo-elements included, so the curtain must opt back in
+     or it never paints */
+  visibility: visible !important;
+  transition: opacity 0.9s ease;
+  /* hard ceiling: if the page never reports kk-ready (script error, blocked
+     asset, anything), the curtain lifts on its own so the app can never be
+     trapped behind it */
+  animation: kkCurtainLift 1.6s ease 8.4s forwards;
+}
+@keyframes kkCurtainLift { to { opacity: 0; } }
+html.kk-ready body::after { opacity: 0; animation: none; }
+#dsh-desktop-boot-cover,
+#dsh-desktop-boot-cover-style { display: none !important; }
+
+/* The shell also loads a sheet with `body, body * { visibility: hidden
+   !important }` (Electron insertCSS, so it cannot be removed from the page).
+   One extra type selector out-specifies it, which lets the artwork curtain —
+   and the UI underneath it — paint during the hand-off. */
+html:not(.kk-ready) body,
+html:not(.kk-ready) body * { visibility: visible !important; }
+
+/* ------------------------------------------- wipe seam + sparks --- */
+#kk-wipefx {
+  position: fixed;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  opacity: 0;
+  overflow: hidden;
+}
+body.kk-wiping #kk-wipefx { opacity: 1; }
+
+#kk-wipefx i {
+  position: absolute;
+  top: -6%;
+  left: 0;
+  width: 2px;
+  height: 112%;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 214, 158, 0) 0%,
+    rgba(255, 226, 178, 0.55) 18%,
+    rgba(255, 238, 205, 0.92) 50%,
+    rgba(255, 214, 152, 0.5) 82%,
+    rgba(255, 200, 140, 0) 100%
+  );
+  box-shadow:
+    0 0 18px 4px rgba(255, 206, 148, 0.38),
+    0 0 64px 16px rgba(232, 148, 84, 0.22);
+  filter: blur(0.3px);
+}
+body.kk-wiping #kk-wipefx i {
+  animation: kk-seam-run 1.7s cubic-bezier(0.22, 0.62, 0.2, 1) both;
+}
+@keyframes kk-seam-run {
+  0%   { left: -2px; opacity: 0; }
+  10%  { opacity: 0.95; }
+  88%  { opacity: 0.8; }
+  100% { left: 100%; opacity: 0; }
+}
+
+#kk-wipefx b {
+  position: absolute;
+  top: var(--sy, 50%);
+  left: 0;
+  width: calc(var(--sr, 2px) * 3);
+  height: calc(var(--sr, 2px) * 3);
+  margin-top: -3px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 236, 196, 0.95), rgba(255, 186, 112, 0) 70%);
+  filter: blur(0.2px);
+  opacity: 0;
+}
+body.kk-wiping #kk-wipefx b {
+  animation: kk-spark-run 1.7s cubic-bezier(0.22, 0.62, 0.2, 1) var(--sd, 0s) both;
+}
+@keyframes kk-spark-run {
+  0%   { left: 0; transform: translate(0, 0) scale(0.5); opacity: 0; }
+  12%  { opacity: 0.9; }
+  55%  { transform: translate(var(--sx, 12px), -14px) scale(1); opacity: 0.75; }
+  100% { left: 100%; transform: translate(0, -30px) scale(0.3); opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body.kk-wiping #kk-wipefx i,
+  body.kk-wiping #kk-wipefx b { animation: none; opacity: 0; }
+}
+
+/* --------------------------------- entering line (字幕 + 日文旁白) --- */
+#kk-line {
+  position: fixed;
+  left: 50%;
+  bottom: 20vh;
+  transform: translate(-50%, 14px);
+  z-index: 2147482000;
+  display: flex;
+  align-items: center;
+  gap: clamp(18px, 2.1vw, 34px);
+  padding: 10px 12px;
+  pointer-events: none;
+  opacity: 0;
+  font-family: "Kaiti SC", "KaiTi", "STKaiti", "BiauKai", "標楷體", "Kaiti TC", "Hiragino Mincho ProN", "Songti SC", serif;
+  font-size: clamp(24px, 2.15vw, 40px);
+  font-weight: 400;
+  letter-spacing: 0.24em;
+  text-indent: 0.24em;
+  color: rgba(252, 234, 204, 0.95);
+  text-shadow:
+    0 1px 3px rgba(26, 9, 6, 0.62),
+    0 0 26px rgba(255, 186, 118, 0.28);
+  transition:
+    opacity 1000ms ease,
+    transform 1400ms cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+#kk-line.on { opacity: 1; transform: translate(-50%, 0); }
+
+#kk-line b {
+  position: absolute;
+  inset: -30px -58px;
+  z-index: -1;
+  border-radius: 26px;
+  background: radial-gradient(closest-side, rgba(28, 11, 9, 0.40), rgba(28, 11, 9, 0));
+}
+
+#kk-line i {
+  display: block;
+  flex: 0 0 auto;
+  width: clamp(52px, 8.5vw, 152px);
+  height: 1px;
+  background: linear-gradient(90deg, rgba(255, 206, 150, 0), rgba(255, 218, 168, 0.95));
+  box-shadow: 0 0 10px rgba(255, 190, 130, 0.30);
+}
+#kk-line i:last-of-type { transform: scaleX(-1); }
+
+#kk-line span {
+  display: block;
+  white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #kk-line { transition: opacity 400ms linear; transform: translate(-50%, 0); }
+}
+
+/* ------------------------------------ 开机小雪片（纯合成器，零 JS 计时） --- */
+#kk-snow {
+  position: fixed;
+  inset: 0;
+  z-index: 2147481002;
+  pointer-events: none;
+  overflow: hidden;
+  opacity: 0;
+  transition: opacity 1400ms ease;
+}
+#kk-snow.on { opacity: 1; }
+#kk-snow i {
+  position: absolute;
+  top: -8vh;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.98), rgba(206, 224, 240, 0.55) 58%, rgba(255, 255, 255, 0) 72%);
+  box-shadow: 0 0 5px rgba(118, 146, 176, 0.42);
+  filter: blur(0.3px);
+  animation-name: kkSnowFall;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  will-change: transform;
+}
+@keyframes kkSnowFall {
+  0%   { transform: translate3d(0, -12vh, 0) scale(var(--s, 1)); opacity: 0; }
+  9%   { opacity: var(--o, 0.8); }
+  88%  { opacity: var(--o, 0.8); }
+  100% { transform: translate3d(var(--dx, 16px), 112vh, 0) scale(var(--s, 1)); opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  #kk-snow { display: none; }
+}

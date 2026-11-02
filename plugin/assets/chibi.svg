@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 170">
+  <defs>
+    <radialGradient id="g" cx="50%" cy="40%" r="60%">
+      <stop offset="0" stop-color="#ffe9d2"/><stop offset="1" stop-color="#f3cdb6"/>
+    </radialGradient>
+  </defs>
+  <!-- branch -->
+  <path d="M4 158 C 34 138, 70 136, 104 148" stroke="#2a1712" stroke-width="6" fill="none" stroke-linecap="round"/>
+  <path d="M60 141 C 62 130, 66 122, 74 116" stroke="#2a1712" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <!-- leaves -->
+  <g fill="#b33a2a">
+    <path d="M96 142 l3 -8 5 3 -2 7 -6 1z"/>
+    <path d="M30 148 l-4 -7 6 -3 4 6 -3 6z"/>
+  </g>
+  <!-- body -->
+  <path d="M49 108 h42 l10 40 h-62 z" fill="#f6eee4"/>
+  <path d="M43 146 h54 v12 h-54z" fill="#8e2020"/>
+  <!-- collar -->
+  <path d="M56 108 l14 18 14 -18" fill="none" stroke="#b23a34" stroke-width="3"/>
+  <!-- head -->
+  <ellipse cx="70" cy="66" rx="38" ry="36" fill="url(#g)"/>
+  <!-- hair back -->
+  <path d="M32 70 C26 26, 114 26, 108 70 L108 118 C104 104, 100 92, 96 84 L44 84 C40 92, 36 104, 32 118 Z" fill="#0e0b16"/>
+  <!-- fringe -->
+  <path d="M34 64 C34 34, 106 34, 106 64 C100 50, 92 46, 84 50 C80 40, 74 38, 70 42 C64 36, 58 40, 56 48 C48 44, 40 50, 34 64 Z" fill="#0e0b16"/>
+  <!-- side locks -->
+  <path d="M34 58 C28 88, 30 112, 38 128 L46 124 C40 108, 40 84, 42 62 Z" fill="#0e0b16"/>
+  <path d="M106 58 C112 88, 110 112, 102 128 L94 124 C100 108, 100 84, 98 62 Z" fill="#0e0b16"/>
+  <!-- brows -->
+  <path d="M48 58 q7 -5 14 -1" stroke="#6b4a3a" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+  <path d="M78 57 q7 -4 14 1" stroke="#6b4a3a" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+  <!-- eyes -->
+  <ellipse cx="56" cy="72" rx="10" ry="11" fill="#fffaf6"/>
+  <ellipse cx="84" cy="72" rx="10" ry="11" fill="#fffaf6"/>
+  <ellipse cx="56" cy="73" rx="6.4" ry="8.2" fill="#8a4a1e"/>
+  <ellipse cx="84" cy="73" rx="6.4" ry="8.2" fill="#8a4a1e"/>
+  <ellipse cx="56" cy="73" rx="3" ry="5" fill="#2a130c"/>
+  <ellipse cx="84" cy="73" rx="3" ry="5" fill="#2a130c"/>
+  <circle cx="58" cy="69" r="2.2" fill="#fff" opacity=".9"/>
+  <circle cx="86" cy="69" r="2.2" fill="#fff" opacity=".9"/>
+  <!-- lids (droopy, sad) -->
+  <path d="M46 68 q10 -7 20 -2" stroke="#241422" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <path d="M74 66 q10 -5 20 2" stroke="#241422" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <!-- tear -->
+  <path d="M50 86 q-2 6 1 9 q3 -3 1 -9z" fill="#bfe0ea" opacity=".85"/>
+  <!-- blush -->
+  <ellipse cx="46" cy="86" rx="6" ry="3" fill="#e88a7a" opacity=".35"/>
+  <ellipse cx="94" cy="86" rx="6" ry="3" fill="#e88a7a" opacity=".35"/>
+  <!-- mouth -->
+  <path d="M66 92 q4 3 8 0" stroke="#a3564a" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+  <!-- bow -->
+  <path d="M36 118 C20 96, 18 70, 30 54" stroke="#3a2418" stroke-width="2.4" fill="none"/>
+  <path d="M36 118 L30 54" stroke="#e8d6c2" stroke-width="1" fill="none"/>
+</svg>

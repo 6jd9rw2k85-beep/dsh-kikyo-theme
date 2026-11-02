@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="zh-CN" data-kk="splash">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title></title>
+    <style>
+      /* the desktop shell injects a "正在启动 DSH Desktop" cover through the
+         preload script; it is not wanted here — this page IS the splash */
+      html { background: #0b0608 !important; }
+      body, body * { visibility: visible !important; }
+      #dsh-desktop-boot-cover, #dsh-desktop-boot-cover-style { display: none !important; }
+
+      :root { color-scheme: dark; }
+      * { box-sizing: border-box; }
+      html, body { width: 100%; height: 100%; margin: 0; overflow: hidden; background: #0b0608; }
+      /* one above the shell's boot cover (2147483646) so the artwork stays on
+         top even if the preload script manages to inject its dark frame */
+      main { position: fixed; inset: 0; overflow: hidden; background: #0b0608; z-index: 2147483647; }
+
+      /* One still frame of the original artwork, drifting at the same zoom the
+         in-page boot animation starts from — so the splash and the boot read as
+         one continuous move instead of two clips butting against each other.
+         11.5s (was 9s) so the opening beats are slower. */
+      #still {
+        position: absolute; inset: 0;
+        width: 100%; height: 100%;
+        object-fit: cover;
+        transform: scale(1.03);
+        animation: kkDrift 11.5s cubic-bezier(0.22, 0.35, 0.2, 1) forwards;
+        will-change: transform;
+      }
+      @keyframes kkDrift {
+        from { transform: scale(1.03) translate3d(0, 0, 0); }
+        55%  { transform: scale(1.048) translate3d(-0.35%, -0.15%, 0); }
+        to   { transform: scale(1.062) translate3d(-0.6%, -0.3%, 0); }
+      }
+      /* the same clip the in-page boot plays, so splash→page reads as one take.
+         stays invisible until it really has frames; the still stays beneath. */
+      #clip {
+        position: absolute; inset: 0;
+        width: 100%; height: 100%;
+        object-fit: cover;
+        transform: scale(1.03);
+        opacity: 0;
+        transition: opacity 1200ms ease;
+        animation: kkDrift 11.5s cubic-bezier(0.22, 0.35, 0.2, 1) forwards;
+        will-change: transform, opacity;
+      }
+      #clip.on { opacity: 1; }
+
+      /* 小雪：12 片，纯 CSS 合成器动画，零 JS */
+      #snow { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+      #snow i {
+        position: absolute; top: -8vh; width: 5px; height: 5px; border-radius: 50%;
+        background: radial-gradient(circle, rgba(255,255,255,.98), rgba(206,224,240,.5) 58%, rgba(255,255,255,0) 72%);
+        box-shadow: 0 0 5px rgba(118,146,176,.4);
+        filter: blur(.3px);
+        animation-name: kkSnow; animation-timing-function: linear; animation-iteration-count: infinite;
+        will-change: transform;
+      }
+      @keyframes kkSnow {
+        0%   { transform: translate3d(0, -12vh, 0); opacity: 0; }
+        10%  { opacity: .78; }
+        88%  { opacity: .78; }
+        100% { transform: translate3d(var(--dx, 16px), 112vh, 0); opacity: 0; }
+      }
+      @media (prefers-reduced-motion: reduce) { #snow { display: none; } }
+
+      #veil {
+        position: absolute; inset: 0;
+        background:
+          radial-gradient(120% 90% at 72% 22%, rgba(196, 104, 62, 0.16), transparent 62%),
+          radial-gradient(90% 80% at 24% 82%, rgba(30, 16, 34, 0.42), transparent 66%),
+          linear-gradient(180deg, rgba(8, 4, 8, 0.20), rgba(8, 4, 8, 0.03) 40%, rgba(8, 4, 8, 0.28));
+        pointer-events: none;
+      }
+      #dust { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+      #mark {
+        position: absolute; left: 0; right: 0; bottom: 8.5vh;
+        text-align: center;
+        font-family: "Hiragino Mincho ProN", "Yu Mincho", "Songti SC", serif;
+        letter-spacing: 0.62em; text-indent: 0.62em;
+        font-size: 13px; color: rgba(246, 227, 205, 0.62);
+        text-shadow: 0 2px 18px rgba(0, 0, 0, 0.7);
+        opacity: 0; transition: opacity 1600ms ease 600ms;
+      }
+      #mark.on { opacity: 1; }
+    </style>
+  </head>
+  <body>
+    <main aria-label="Kikyo">
+      <img id="still" src="kikyo-poster.jpg" alt="" decoding="async" />
+      <video id="clip" src="kikyo-splash.mp4" muted autoplay loop playsinline preload="auto"></video>
+      <div id="veil"></div>
+      <div id="snow"><i style="left:32.41%;animation-duration:11.4s;animation-delay:-11.7s;--dx:-34.2px;width:4px;height:4px"></i><i style="left:36.47%;animation-duration:10.5s;animation-delay:-9.1s;--dx:-37.0px;width:4px;height:4px"></i><i style="left:7.78%;animation-duration:10.8s;animation-delay:-7.6s;--dx:26.1px;width:3px;height:3px"></i><i style="left:22.65%;animation-duration:15.6s;animation-delay:-17.1s;--dx:6.2px;width:4px;height:4px"></i><i style="left:95.7%;animation-duration:10.4s;animation-delay:-15.5s;--dx:-16.8px;width:3px;height:3px"></i><i style="left:12.43%;animation-duration:12.8s;animation-delay:-14.7s;--dx:-25.5px;width:4px;height:4px"></i><i style="left:62.97%;animation-duration:13.4s;animation-delay:-9.9s;--dx:-35.0px;width:3px;height:3px"></i><i style="left:20.98%;animation-duration:16.1s;animation-delay:-7.7s;--dx:-14.9px;width:4px;height:4px"></i><i style="left:44.96%;animation-duration:12.7s;animation-delay:-14.3s;--dx:15.9px;width:3px;height:3px"></i><i style="left:56.72%;animation-duration:14.7s;animation-delay:-15.8s;--dx:18.4px;width:3px;height:3px"></i><i style="left:96.08%;animation-duration:11.1s;animation-delay:-7.5s;--dx:20.6px;width:3px;height:3px"></i><i style="left:48.43%;animation-duration:10.4s;animation-delay:-12.0s;--dx:21.2px;width:4px;height:4px"></i></div>
+      <canvas id="dust"></canvas>
+      <div id="mark">K I K Y O &nbsp;·&nbsp; D E E P S E E K</div>
+    </main>
+    <script>
+      /* 1. strip the shell's boot cover as early as possible, and keep stripping
+            it while the window lives (the shell may re-insert it on reload) */
+      (function () {
+        var IDS = ['dsh-desktop-boot-cover', 'dsh-desktop-boot-cover-style'];
+        function strip() {
+          for (var i = 0; i < IDS.length; i++) {
+            var n = document.getElementById(IDS[i]);
+            if (n && n.parentNode) n.parentNode.removeChild(n);
+          }
+          if (document.body) document.body.style.visibility = 'visible';
+          if (document.documentElement) document.documentElement.style.background = '#0b0608';
+          /* inline !important beats any stylesheet !important, including the
+             shell's "body, body * { visibility: hidden }" */
+          var keep = document.querySelectorAll('main, main *');
+          for (var k = 0; k < keep.length; k++) {
+            keep[k].style.setProperty('visibility', 'visible', 'important');
+          }
+        }
+        strip();
+        try {
+          new MutationObserver(strip).observe(document.documentElement, { childList: true, subtree: true });
+        } catch (e) {}
+        var until = Date.now() + 20000;
+        var timer = setInterval(function () { strip(); if (Date.now() > until) clearInterval(timer); }, 250);
+      })();
+
+      /* 2. golden dust drifting up over the still */
+      (function () {
+        var c = document.getElementById('dust');
+        var ctx = c.getContext('2d');
+        var dpr = Math.min(window.devicePixelRatio || 1, 2);
+        var W = 0, H = 0, parts = [];
+        function size() {
+          W = c.clientWidth || window.innerWidth;
+          H = c.clientHeight || window.innerHeight;
+          c.width = Math.round(W * dpr);
+          c.height = Math.round(H * dpr);
+          ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        }
+        function seed() {
+          parts = [];
+          var n = Math.round(Math.min(90, Math.max(36, W / 22)));
+          for (var i = 0; i < n; i++) {
+            parts.push({
+              x: Math.random() * W,
+              y: H * (0.35 + Math.random() * 0.75),
+              r: 0.6 + Math.random() * 1.9,
+              vy: -(4 + Math.random() * 13) / 60,
+              vx: (Math.random() - 0.5) * 0.25,
+              a: 0.12 + Math.random() * 0.5,
+              ph: Math.random() * 6.28
+            });
+          }
+        }
+        var t = 0;
+        function frame() {
+          t += 1 / 60;
+          ctx.clearRect(0, 0, W, H);
+          ctx.globalCompositeOperation = 'lighter';
+          for (var i = 0; i < parts.length; i++) {
+            var p = parts[i];
+            p.y += p.vy;
+            p.x += p.vx + Math.sin(t * 0.7 + p.ph) * 0.18;
+            if (p.y < -12) { p.y = H + 10; p.x = Math.random() * W; }
+            var tw = 0.62 + 0.38 * Math.sin(t * 1.6 + p.ph);
+            var g = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r * 4);
+            g.addColorStop(0, 'rgba(255, 226, 168, ' + (p.a * tw).toFixed(3) + ')');
+            g.addColorStop(1, 'rgba(255, 190, 120, 0)');
+            ctx.fillStyle = g;
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.r * 4, 0, 6.2832);
+            ctx.fill();
+          }
+          ctx.globalCompositeOperation = 'source-over';
+          requestAnimationFrame(frame);
+        }
+        size(); seed(); frame();
+        window.addEventListener('resize', function () { size(); seed(); });
+      })();
+
+      /* 2b. the motion clip fades in over the still once it can play */
+      (function () {
+        var v = document.getElementById('clip');
+        if (!v) return;
+        function on() {
+          v.classList.add('on');
+          var p = v.play();
+          if (p && p.catch) p.catch(function () {});
+        }
+        v.addEventListener('loadeddata', on);
+        v.addEventListener('error', function () { /* keep the still */ });
+        setTimeout(function () { if (v.readyState >= 2) on(); }, 1500);
+      })();
+
+      /* 3. the mark fades in once the picture is there */
+      (function () {
+        var img = document.getElementById('still');
+        var mark = document.getElementById('mark');
+        function on() { mark.classList.add('on'); }
+        if (img.complete) on();
+        else { img.addEventListener('load', on); img.addEventListener('error', on); }
+        setTimeout(on, 900);
+      })();
+    </script>
+  </body>
+</html>

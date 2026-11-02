@@ -1,0 +1,41 @@
+# macOS
+.DS_Store
+
+# 主题开关（本机状态，不进仓库）
+plugin/kikyo-off
+
+# ---- 美术/音频素材：版权不属于作者，一律不提交 ----
+plugin/art-web/
+plugin/art-originals/
+plugin/assets/*.jpg
+plugin/assets/*.jpeg
+plugin/assets/*.png
+plugin/assets/*.webp
+plugin/assets/*.mp4
+plugin/assets/*.mov
+plugin/assets/*.m4a
+plugin/assets/*.mp3
+plugin/assets/*.wav
+host/*.jpg
+host/*.mp4
+docs/preview-*
+docs/*.m4a
+# 作者自制的效果图（已获授权），单独放行
+!docs/preview/
+!docs/preview/*.jpg
+# 插件目录下历史遗留的预览图与 OST 采样，同样含版权素材
+plugin/docs/*.jpg
+plugin/docs/*.png
+plugin/docs/*.m4a
+plugin/docs/*.mp4
+
+# 如果确实要发布一小段自制的 gif/webp 演示，把上面几行改成白名单写法，例如：
+# !plugin/assets/demo.gif
+
+# 生成物
+MANIFEST.txt
+*.tar.gz
+node_modules/
+
+# gh CLI 下载与解压目录
+.tmp/

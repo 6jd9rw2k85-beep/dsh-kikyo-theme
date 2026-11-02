@@ -1,0 +1,10 @@
+# dsh-kikyo-theme 的 bundle patch 层。
+#
+# package.json 的 `dsh.bundle.patch` 指向本文件：DSH 的 loader 按 bundle 层栈叠加，
+# 把这一行插进 profile 的组合树，插件才会被 import 并执行 apply()。
+#
+# 注意：`name` 必须与安装的包名完全一致，否则 loader 只 warn 然后跳过——
+# 表现就是「插件没生效、路由也没有、界面看起来就是原生外观」。
+- insert:
+    - id: dsh-kikyo-theme
+      name: dsh-kikyo-theme
